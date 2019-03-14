@@ -50,7 +50,7 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 			plugins.push(
 				production
 				? new webpack.SourceMapDevToolPlugin(<SourceMapDevToolPluginOptions>{
-					test: scriptsOnlyTest,
+					// test: scriptsOnlyTest,
 					filename: "[name].js.map"
 				})
 				: new webpack.EvalSourceMapDevToolPlugin(<SourceMapDevToolPluginOptions> {
