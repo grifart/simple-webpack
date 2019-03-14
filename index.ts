@@ -8,6 +8,7 @@ const imageminJpegtran = require("imagemin-jpegtran");
 const imageminOptipng = require("imagemin-optipng");
 const imageminSvgo = require("imagemin-svgo");
 
+const postcssPresetEnv = require('postcss-preset-env');
 
 export interface SimpleWebPackConfig_v1 {
 	scripts: {
@@ -43,7 +44,16 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1): WebpackOpt
 			use: [
 				MiniCssExtractPlugin.loader, // creates style nodes from JS strings
 				"css-loader", // translates CSS into CommonJS
-				"sass-loader" // compiles Sass to CSS, using Node Sass by default
+				"sass-loader", // compiles Sass to CSS, using Node Sass by default
+				{
+					loader: 'postcss-loader',
+					options: {
+						ident: 'postcss',
+						plugins: () => [
+							postcssPresetEnv(/* pluginOptions */)
+						]
+					}
+				},
 			]
 		});
 
