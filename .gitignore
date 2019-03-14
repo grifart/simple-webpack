@@ -1,0 +1,3 @@
+.idea/
+node_modules/
+# intentionally not excluding .js files (no CI build yet)

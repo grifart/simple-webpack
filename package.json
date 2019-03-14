@@ -1,0 +1,31 @@
+{
+  "name": "@grifart/simple-webpack",
+  "version": "1.0.0",
+  "description": "Simple webpack for simple websites",
+  "author": "Grifart spol. s r.o.",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@types/webpack": "^4.4.25",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "file-loader": "^3.0.1",
+    "imagemin-gifsicle": "^6.0.1",
+    "imagemin-jpegtran": "^5.0.2",
+    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-optipng": "^5.2.1",
+    "imagemin-pngquant": "^7.0.0",
+    "imagemin-svgo": "^7.0.0",
+    "imagemin-webpack": "^4.1.0",
+    "mini-css-extract-plugin": "^0.5.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.3.3333",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  }
+}
