@@ -15,7 +15,7 @@ function provideConfiguration(config) {
         if (config.scripts.enabled) {
             var scriptsOnlyTest = /\.js$/;
             rules.push({
-                test: /\.js$/,
+                test: scriptsOnlyTest,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader"
@@ -24,7 +24,7 @@ function provideConfiguration(config) {
             plugins.push(production
                 ? new webpack.SourceMapDevToolPlugin({
                     test: scriptsOnlyTest,
-                    filename: production ? "[name].js.map" : null
+                    filename: "[name].js.map"
                 })
                 : new webpack.EvalSourceMapDevToolPlugin({
                     test: scriptsOnlyTest

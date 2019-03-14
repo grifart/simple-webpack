@@ -40,7 +40,7 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 		if (config.scripts.enabled) {
 			const scriptsOnlyTest = /\.js$/;
 			rules.push({
-				test: /\.js$/,
+				test: scriptsOnlyTest,
 				exclude: /node_modules/,
 				use: {
 					loader: "babel-loader"
@@ -51,7 +51,7 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 				production
 				? new webpack.SourceMapDevToolPlugin(<SourceMapDevToolPluginOptions>{
 					test: scriptsOnlyTest,
-					filename: production ? "[name].js.map" : null
+					filename: "[name].js.map"
 				})
 				: new webpack.EvalSourceMapDevToolPlugin(<SourceMapDevToolPluginOptions> {
 					test: scriptsOnlyTest
