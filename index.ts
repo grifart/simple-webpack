@@ -43,20 +43,23 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 				test: scriptsOnlyTest,
 				exclude: /node_modules/,
 				use: {
-					loader: "babel-loader"
+					loader: "babel-loader",
+					options: {
+						sourceMap: true
+					}
 				}
 			});
 
-			plugins.push(
-				production
-				? new webpack.SourceMapDevToolPlugin(<SourceMapDevToolPluginOptions>{
-					// test: scriptsOnlyTest,
-					filename: "[name].js.map"
-				})
-				: new webpack.EvalSourceMapDevToolPlugin(<SourceMapDevToolPluginOptions> {
-					test: scriptsOnlyTest
-				})
-			);
+			// plugins.push(
+			// 	production
+			// 	? new webpack.SourceMapDevToolPlugin(<SourceMapDevToolPluginOptions>{
+			// 		// test: scriptsOnlyTest,
+			// 		filename: "[name].js.map"
+			// 	})
+			// 	: new webpack.EvalSourceMapDevToolPlugin(<SourceMapDevToolPluginOptions> {
+			// 		test: scriptsOnlyTest
+			// 	})
+			// );
 		}
 
 		if (config.styles.enabled) {
@@ -109,12 +112,12 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 			}
 
 
-			plugins.push(
-				new webpack.SourceMapDevToolPlugin(<SourceMapDevToolPluginOptions>{
-					test: onlyStylesTest,
-					filename: "[name].css.map"
-				})
-			);
+			// plugins.push(
+			// 	new webpack.SourceMapDevToolPlugin(<SourceMapDevToolPluginOptions>{
+			// 		test: onlyStylesTest,
+			// 		filename: "[name].css.map"
+			// 	})
+			// );
 		}
 
 
@@ -133,37 +136,40 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 
 			if (config.images.optimize) {
 				// Make sure that the plugin is after any plugins that add images, example `CopyWebpackPlugin`
-				new ImageminPlugin({
-					bail: false, // Ignore errors on corrupted images
-					cache: true,
-					imageminOptions: {
-						// Lossless optimization with custom option
-						// Feel free to experement with options for better result for you
-						plugins: [
-							imageminGifsicle({
-								interlaced: true
-							}),
-							imageminJpegtran({
-								progressive: true
-							}),
-							imageminOptipng({
-								optimizationLevel: 5
-							}),
-							imageminSvgo({
-								removeViewBox: true
-							})
-						]
-					}
-				});
+				plugins.push(
+					new ImageminPlugin({
+						bail: false, // Ignore errors on corrupted images
+						cache: true,
+						imageminOptions: {
+							// Lossless optimization with custom option
+							// Feel free to experement with options for better result for you
+							plugins: [
+								imageminGifsicle({
+									interlaced: true
+								}),
+								imageminJpegtran({
+									progressive: true
+								}),
+								imageminOptipng({
+									optimizationLevel: 5
+								}),
+								imageminSvgo({
+									removeViewBox: true
+								})
+							]
+						}
+					})
+				);
 			}
 		}
 
 		return { rules, plugins };
 	};
 	return (env, options) => {
-		const result = evaluate(options.mode === 'production');
+		const isProduction = options.mode === 'production';
+		const result = evaluate(isProduction);
 		return {
-			devtool: false, // handled individually by plugins
+			devtool: isProduction ? "source-maps" : "inline-source-maps",
 			module: {
 				rules: result.rules
 			},
