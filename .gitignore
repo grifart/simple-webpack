@@ -1,3 +1,4 @@
 .idea/
 node_modules/
+**/dist/
 # intentionally not excluding .js files (no CI build yet)
