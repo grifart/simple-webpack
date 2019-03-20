@@ -12,5 +12,5 @@ export default provideConfiguration({
 	styles: {
 		enabled: true,
 		extract: true
-	}
+	},
 })

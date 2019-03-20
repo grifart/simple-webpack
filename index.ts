@@ -16,7 +16,7 @@ const postcssPresetEnv = require('postcss-preset-env');
 export interface SimpleWebPackConfig_v1 {
 	scripts: {
 		enabled: boolean,
-	}
+	},
 	styles: {
 		enabled: boolean,
 		extract: boolean;
@@ -24,7 +24,7 @@ export interface SimpleWebPackConfig_v1 {
 	images: {
 		enabled: boolean,
 		optimize: boolean,
-	}
+	},
 }
 
 export function provideConfiguration(config: SimpleWebPackConfig_v1):
@@ -151,6 +151,9 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 		const result = evaluate(isProduction);
 		return {
 			devtool: isProduction ? "source-maps" : "inline-source-maps",
+			devServer:{
+				publicPath: '/dist/'
+			},
 			module: {
 				rules: result.rules
 			},

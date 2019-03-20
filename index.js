@@ -23,16 +23,6 @@ function provideConfiguration(config) {
                     }
                 }
             });
-            // plugins.push(
-            // 	production
-            // 	? new webpack.SourceMapDevToolPlugin(<SourceMapDevToolPluginOptions>{
-            // 		// test: scriptsOnlyTest,
-            // 		filename: "[name].js.map"
-            // 	})
-            // 	: new webpack.EvalSourceMapDevToolPlugin(<SourceMapDevToolPluginOptions> {
-            // 		test: scriptsOnlyTest
-            // 	})
-            // );
         }
         if (config.styles.enabled) {
             var onlyStylesTest = /\.s?css$/;
@@ -79,12 +69,6 @@ function provideConfiguration(config) {
                     chunkFilename: "[id].css"
                 }));
             }
-            // plugins.push(
-            // 	new webpack.SourceMapDevToolPlugin(<SourceMapDevToolPluginOptions>{
-            // 		test: onlyStylesTest,
-            // 		filename: "[name].css.map"
-            // 	})
-            // );
         }
         if (config.images.enabled) {
             rules.push({
@@ -129,6 +113,9 @@ function provideConfiguration(config) {
         var result = evaluate(isProduction);
         return {
             devtool: isProduction ? "source-maps" : "inline-source-maps",
+            devServer: {
+                publicPath: '/dist/'
+            },
             module: {
                 rules: result.rules
             },
