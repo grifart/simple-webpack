@@ -49,17 +49,6 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 					}
 				}
 			});
-
-			// plugins.push(
-			// 	production
-			// 	? new webpack.SourceMapDevToolPlugin(<SourceMapDevToolPluginOptions>{
-			// 		// test: scriptsOnlyTest,
-			// 		filename: "[name].js.map"
-			// 	})
-			// 	: new webpack.EvalSourceMapDevToolPlugin(<SourceMapDevToolPluginOptions> {
-			// 		test: scriptsOnlyTest
-			// 	})
-			// );
 		}
 
 		if (config.styles.enabled) {
@@ -110,14 +99,6 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 					})
 				);
 			}
-
-
-			// plugins.push(
-			// 	new webpack.SourceMapDevToolPlugin(<SourceMapDevToolPluginOptions>{
-			// 		test: onlyStylesTest,
-			// 		filename: "[name].css.map"
-			// 	})
-			// );
 		}
 
 
