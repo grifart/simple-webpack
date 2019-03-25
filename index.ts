@@ -1,5 +1,6 @@
 import * as webpack from "webpack";
 import {SourceMapDevToolPluginOptions} from "webpack/declarations/plugins/SourceMapDevToolPlugin";
+import * as path from "path";
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ImageminPlugin = require("imagemin-webpack");
@@ -25,6 +26,9 @@ export interface SimpleWebPackConfig_v1 {
 		enabled: boolean,
 		optimize: boolean,
 	},
+	entry?: string,
+	distPath?: string;
+	devServer?: string,
 }
 
 export function provideConfiguration(config: SimpleWebPackConfig_v1):
@@ -150,9 +154,13 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 		const isProduction = options.mode === 'production';
 		const result = evaluate(isProduction);
 		return {
+			entry: config.entry || '',
+			output: {
+				path: config.distPath || '',
+			},
 			devtool: isProduction ? "source-maps" : "inline-source-maps",
-			devServer:{
-				publicPath: '/dist/'
+			devServer: {
+				publicPath: config.devServer || '',
 			},
 			module: {
 				rules: result.rules

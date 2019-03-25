@@ -112,9 +112,13 @@ function provideConfiguration(config) {
         var isProduction = options.mode === 'production';
         var result = evaluate(isProduction);
         return {
+            entry: config.entry || '',
+            output: {
+                path: config.distPath || ''
+            },
             devtool: isProduction ? "source-maps" : "inline-source-maps",
             devServer: {
-                publicPath: '/dist/'
+                publicPath: config.devServer || ''
             },
             module: {
                 rules: result.rules
