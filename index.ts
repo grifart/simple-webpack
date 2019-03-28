@@ -27,8 +27,9 @@ export interface SimpleWebPackConfig_v1 {
 		optimize: boolean,
 	},
 	entryPoint?: string,
-	outputDirectory?: string;
-	devServer?: string,
+	outputDirectory?: string,
+	devServerDistPath?: string,
+	devServerContentBase?: string,
 }
 
 export function provideConfiguration(config: SimpleWebPackConfig_v1):
@@ -154,13 +155,14 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 		const isProduction = options.mode === 'production';
 		const result = evaluate(isProduction);
 		return {
-			entry: config.entryPoint || '',
+			entry: config.entryPoint,
 			output: {
-				path: config.outputDirectory || '',
+				path: config.outputDirectory,
 			},
 			devtool: isProduction ? "source-maps" : "inline-source-maps",
 			devServer: {
-				publicPath: config.devServer || '',
+				publicPath: config.devServerDistPath,
+				contentBase: config.devServerContentBase,
 			},
 			module: {
 				rules: result.rules
