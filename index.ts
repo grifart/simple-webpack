@@ -26,8 +26,8 @@ export interface SimpleWebPackConfig_v1 {
 		enabled: boolean,
 		optimize: boolean,
 	},
-	entry?: string,
-	distPath?: string;
+	entryPoint?: string,
+	outputDirectory?: string;
 	devServer?: string,
 }
 
@@ -154,9 +154,9 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 		const isProduction = options.mode === 'production';
 		const result = evaluate(isProduction);
 		return {
-			entry: config.entry || '',
+			entry: config.entryPoint || '',
 			output: {
-				path: config.distPath || '',
+				path: config.outputDirectory || '',
 			},
 			devtool: isProduction ? "source-maps" : "inline-source-maps",
 			devServer: {
