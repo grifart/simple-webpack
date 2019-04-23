@@ -1,8 +1,9 @@
-import {provideConfiguration} from "../../index";
+import {provideConfiguration, SimpleWebPackConfig_v1_Paths_DEFAULT} from "../../index";
 import {WebpackOptions} from "webpack/declarations/WebpackOptions";
 import * as path from "path";
 
 export default provideConfiguration({
+
 	images: {
 		enabled: true,
 		optimize: true
@@ -14,4 +15,5 @@ export default provideConfiguration({
 		enabled: true,
 		extract: true
 	},
-})
+	paths: SimpleWebPackConfig_v1_Paths_DEFAULT
+}, "")

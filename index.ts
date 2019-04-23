@@ -178,7 +178,7 @@ export function provideConfiguration(
 	};
 
 	const absolutize = (relative: string): string =>
-		path.join(projectAbsoluteRootPath, relative);
+		path.resolve(projectAbsoluteRootPath, relative);
 
 	return (env, options) => {
 		const isProduction = options.mode === 'production';
@@ -192,7 +192,7 @@ export function provideConfiguration(
 			devtool: isProduction ? "source-maps" : "inline-source-maps",
 			devServer: {
 				// The bundled files will be available in the browser under this path...
-				publicPath: path.relative(
+				publicPath: "/" + path.relative(
 					absolutize(config.paths.publicContentRoot),
 					absolutize(config.paths.distributionDirectory)
 				),

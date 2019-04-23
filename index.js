@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+var path = require("path");
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var ImageminPlugin = require("imagemin-webpack");
 var imageminGifsicle = require("imagemin-gifsicle");
@@ -7,7 +8,12 @@ var imageminJpegtran = require("imagemin-jpegtran");
 var imageminOptipng = require("imagemin-optipng");
 var imageminSvgo = require("imagemin-svgo");
 var postcssPresetEnv = require('postcss-preset-env');
-function provideConfiguration(config) {
+exports.SimpleWebPackConfig_v1_Paths_DEFAULT = {
+    applicationEntryPointFile: "src/index.js",
+    distributionDirectory: "dist",
+    publicContentRoot: "."
+};
+function provideConfiguration(config, projectAbsoluteRootPath) {
     var evaluate = function (production) {
         var rules = [];
         var plugins = [];
@@ -108,18 +114,23 @@ function provideConfiguration(config) {
         }
         return { rules: rules, plugins: plugins };
     };
+    var absolutize = function (relative) {
+        return path.resolve(projectAbsoluteRootPath, relative);
+    };
     return function (env, options) {
         var isProduction = options.mode === 'production';
         var result = evaluate(isProduction);
         return {
-            entry: config.entryPoint,
+            entry: absolutize(config.paths.applicationEntryPointFile),
             output: {
-                path: config.outputDirectory
+                path: absolutize(config.paths.distributionDirectory)
             },
             devtool: isProduction ? "source-maps" : "inline-source-maps",
             devServer: {
-                publicPath: config.devServerDistPath,
-                contentBase: config.devServerContentBase
+                // The bundled files will be available in the browser under this path...
+                publicPath: "/" + path.relative(absolutize(config.paths.publicContentRoot), absolutize(config.paths.distributionDirectory)),
+                // Tell the server where to serve content from.
+                contentBase: absolutize(config.paths.publicContentRoot)
             },
             module: {
                 rules: result.rules
