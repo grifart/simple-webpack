@@ -16,4 +16,4 @@ export default provideConfiguration({
 		extract: true
 	},
 	paths: SimpleWebPackConfig_v1_Paths_DEFAULT
-}, "")
+}, __dirname)
