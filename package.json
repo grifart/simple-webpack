@@ -5,7 +5,8 @@
   "author": "Grifart spol. s r.o.",
   "license": "MIT",
   "scripts": {
-    "build": "tsc index.ts"
+    "build": "tsc index.ts",
+    "test": "cd tests && bash run.sh"
   },
   "dependencies": {
     "@babel/core": "^7.3.4",

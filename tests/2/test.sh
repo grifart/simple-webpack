@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
-function cleanup() {
-	rm yarn.lock
-	rm -rf node_modules
-	rm -rf www/dist
-}
+source ../functions.sh
 
-cleanup
+cleanup www/dist
+
 yarn install
 yarn run build
-cleanup
+
+echo "Check that it produces all expected files..."
+assertFileExists www/dist/main.js
+assertFileExists www/dist/main.js.map
+assertFileExists www/dist/main.css
+assertFileExists www/dist/main.css.map
+
+echo "Check that webpack generated valid JavaScript...";
+node www/dist/main.js
+assertCommandDoesNotFail
+
+cleanup www/dist
