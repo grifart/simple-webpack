@@ -1,7 +1,8 @@
 language: node_js
 node_js:
   - "10" # LTS
-  - "12" # current
+  - "11"
+#  - "12" # current
 
 script:
   - cd tests
