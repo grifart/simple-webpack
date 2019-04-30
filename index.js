@@ -14,6 +14,10 @@ exports.SimpleWebPackConfig_v1_Paths_DEFAULT = {
     publicContentRoot: "."
 };
 function provideConfiguration(config, projectAbsoluteRootPath) {
+    console.log(projectAbsoluteRootPath);
+    if (!path.isAbsolute(projectAbsoluteRootPath)) {
+        throw new Error("Project root path must be an absolute path.");
+    }
     var evaluate = function (production) {
         var rules = [];
         var plugins = [];

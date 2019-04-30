@@ -60,6 +60,11 @@ export function provideConfiguration(
 	projectAbsoluteRootPath: string
 ): (env: any, options: webpack.WebpackOptions) => webpack.WebpackOptions
 {
+	console.log(projectAbsoluteRootPath);
+	if (!path.isAbsolute(projectAbsoluteRootPath)) {
+		throw new Error("Project root path must be an absolute path.");
+	}
+
 	const evaluate = (production: boolean): {
 		rules: webpack.WebpackOptions.module.rules,
 		plugins: webpack.WebpackOptions.plugins
@@ -130,8 +135,6 @@ export function provideConfiguration(
 				);
 			}
 		}
-
-
 
 		if (config.images.enabled) {
 			rules.push({
