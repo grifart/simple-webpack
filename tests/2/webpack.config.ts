@@ -1,6 +1,4 @@
 import {provideConfiguration, SimpleWebPackConfig_v1_Paths_DEFAULT} from "../../index";
-import {WebpackOptions} from "webpack/declarations/WebpackOptions";
-import * as path from "path";
 
 export default provideConfiguration({
 
@@ -15,5 +13,9 @@ export default provideConfiguration({
 		enabled: true,
 		extract: true
 	},
-	paths: SimpleWebPackConfig_v1_Paths_DEFAULT
+	paths: {
+		applicationEntryPointFile: "sources/index.js",
+		distributionDirectory: "www/dist",
+		publicContentRoot: "www"
+	}
 }, __dirname)

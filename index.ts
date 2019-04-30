@@ -1,5 +1,5 @@
 import * as webpack from "webpack";
-import {SourceMapDevToolPluginOptions} from "webpack/declarations/plugins/SourceMapDevToolPlugin";
+import * as path from "path";
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ImageminPlugin = require("imagemin-webpack");
@@ -11,7 +11,34 @@ const imageminSvgo = require("imagemin-svgo");
 
 const postcssPresetEnv = require('postcss-preset-env');
 
+export interface SimpleWebPackConfig_v1_Paths {
+	/**
+	 * Relative path to entry point of your application.
+	 * This file is dependency tree root of your application.
+	 * (transitively references everything from your application)
+	 * @default "src/index.js"
+	 */
+	applicationEntryPointFile: string,
 
+	/**
+	 * Relative path to where compiled files should be produced.
+	 * @default "dist"
+	 */
+	distributionDirectory: string,
+
+	/**
+	 * Which directory is publicly accessible on production.
+	 * Typically this folder where your index.html is.
+	 * @default "."
+	 */
+	publicContentRoot: string,
+}
+
+export const SimpleWebPackConfig_v1_Paths_DEFAULT: SimpleWebPackConfig_v1_Paths = {
+	applicationEntryPointFile: "src/index.js",
+	distributionDirectory: "dist",
+	publicContentRoot: "."
+};
 
 export interface SimpleWebPackConfig_v1 {
 	scripts: {
@@ -25,11 +52,19 @@ export interface SimpleWebPackConfig_v1 {
 		enabled: boolean,
 		optimize: boolean,
 	},
+	paths: SimpleWebPackConfig_v1_Paths,
 }
 
-export function provideConfiguration(config: SimpleWebPackConfig_v1):
-	(env: any, options: webpack.WebpackOptions) => webpack.WebpackOptions
+export function provideConfiguration(
+	config: SimpleWebPackConfig_v1,
+	projectAbsoluteRootPath: string
+): (env: any, options: webpack.WebpackOptions) => webpack.WebpackOptions
 {
+	console.log(projectAbsoluteRootPath);
+	if (!path.isAbsolute(projectAbsoluteRootPath)) {
+		throw new Error("Project root path must be an absolute path.");
+	}
+
 	const evaluate = (production: boolean): {
 		rules: webpack.WebpackOptions.module.rules,
 		plugins: webpack.WebpackOptions.plugins
@@ -101,8 +136,6 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 			}
 		}
 
-
-
 		if (config.images.enabled) {
 			rules.push({
 				test: /\.(png|jpe?g|svg)$/,
@@ -146,13 +179,29 @@ export function provideConfiguration(config: SimpleWebPackConfig_v1):
 
 		return { rules, plugins };
 	};
+
+	const absolutize = (relative: string): string =>
+		path.resolve(projectAbsoluteRootPath, relative);
+
 	return (env, options) => {
 		const isProduction = options.mode === 'production';
 		const result = evaluate(isProduction);
+
 		return {
+			entry: absolutize(config.paths.applicationEntryPointFile),
+			output: {
+				path: absolutize(config.paths.distributionDirectory),
+			},
 			devtool: isProduction ? "source-maps" : "inline-source-maps",
-			devServer:{
-				publicPath: '/dist/'
+			devServer: {
+				// The bundled files will be available in the browser under this path...
+				publicPath: "/" + path.relative(
+					absolutize(config.paths.publicContentRoot),
+					absolutize(config.paths.distributionDirectory)
+				),
+
+				// Tell the server where to serve content from.
+				contentBase: absolutize(config.paths.publicContentRoot),
 			},
 			module: {
 				rules: result.rules
