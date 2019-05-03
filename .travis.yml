@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - "10" # LTS (in 04/2019)
+  - "11"
+  - "12" # current (in 04/2019)
+
+script:
+  - yarn run test
