@@ -84,6 +84,14 @@ export function provideConfiguration(
 					}
 				}
 			});
+			rules.push({
+					test: /\.tsx?$/,
+					exclude: /node_modules/,
+					use: {
+						loader: "ts-loader",
+					},
+				},
+			);
 		}
 
 		if (config.styles.enabled) {
@@ -222,7 +230,7 @@ export function provideConfiguration(
 			module: {
 				rules: result.rules
 			},
-			plugins: result.plugins
+			plugins: result.plugins,
 		};
 	};
 }

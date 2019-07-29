@@ -33,6 +33,13 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                     }
                 }
             });
+            rules.push({
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "ts-loader"
+                }
+            });
         }
         if (config.styles.enabled) {
             var onlyStylesTest = /\.s?css$/;

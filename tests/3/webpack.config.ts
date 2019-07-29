@@ -1,4 +1,4 @@
-import {provideConfiguration, SimpleWebPackConfig_v1_Paths_DEFAULT} from "../../index";
+import {provideConfiguration} from "../../index";
 
 export default provideConfiguration({
 
@@ -14,7 +14,7 @@ export default provideConfiguration({
 		extract: true
 	},
 	paths: {
-		applicationEntryPointFile: "sources/index.js",
+		applicationEntryPointFile: "sources/index.ts",
 		distributionDirectory: "www/dist",
 		publicContentRoot: "www"
 	}

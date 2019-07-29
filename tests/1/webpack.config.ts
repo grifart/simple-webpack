@@ -1,6 +1,4 @@
 import {provideConfiguration, SimpleWebPackConfig_v1_Paths_DEFAULT} from "../../index";
-import {WebpackOptions} from "webpack/declarations/WebpackOptions";
-import * as path from "path";
 
 export default provideConfiguration({
 
