@@ -216,7 +216,7 @@ export function provideConfiguration(
 			output: {
 				path: absolutize(config.paths.distributionDirectory),
 			},
-			devtool: isProduction ? "source-maps" : "inline-source-maps",
+			devtool: isProduction ? "source-map" : "inline-source-map",
 			devServer: {
 				// The bundled files will be available in the browser under this path...
 				publicPath: "/" + path.relative(
