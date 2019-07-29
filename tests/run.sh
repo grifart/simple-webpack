@@ -12,3 +12,7 @@ cd 2
 bash test.sh
 cd ..
 
+cd 3
+bash test.sh
+cd ..
+
