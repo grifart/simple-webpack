@@ -1,5 +1,6 @@
 
 import "./scss/something.scss";
+import {test} from "./test/testModule";
 
 // Some random ES6 feature, that needs to be transpiled to older JS
 async function testAsync () {
@@ -7,7 +8,7 @@ async function testAsync () {
 }
 
 class TypeScriptTest {
-	private test: TypeScriptTest;
+	private test: TypeScriptTest|null = null;
 	protected protected() {}
 
 	public static run(): boolean {return true;}
@@ -16,6 +17,7 @@ class TypeScriptTest {
 
 (async function() {
 	await testAsync();
+	test();
 
 	const instance: TypeScriptTest = new TypeScriptTest();
 	instance.run();

@@ -231,6 +231,9 @@ export function provideConfiguration(
 				rules: result.rules
 			},
 			plugins: result.plugins,
+			resolve: {
+				extensions: ['.ts', '.js', '.json', '.css', '.scss'],
+			}
 		};
 	};
 }

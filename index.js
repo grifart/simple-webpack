@@ -161,7 +161,10 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
             module: {
                 rules: result.rules
             },
-            plugins: result.plugins
+            plugins: result.plugins,
+            resolve: {
+                extensions: ['.ts', '.js', '.json', '.css', '.scss']
+            }
         };
     };
 }
