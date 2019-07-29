@@ -58,7 +58,7 @@ export interface SimpleWebPackConfig_v1 {
 export function provideConfiguration(
 	config: SimpleWebPackConfig_v1,
 	projectAbsoluteRootPath: string
-): (env: any, options: webpack.WebpackOptions) => webpack.WebpackOptions
+): (env: any, options: webpack.Configuration) => webpack.Configuration
 {
 	console.log(projectAbsoluteRootPath);
 	if (!path.isAbsolute(projectAbsoluteRootPath)) {
@@ -66,8 +66,8 @@ export function provideConfiguration(
 	}
 
 	const evaluate = (production: boolean): {
-		rules: webpack.WebpackOptions.module.rules,
-		plugins: webpack.WebpackOptions.plugins
+		rules: webpack.RuleSetRule[],
+		plugins: webpack.Plugin[]
 	} => {
 		let rules = [];
 		let plugins = [];
