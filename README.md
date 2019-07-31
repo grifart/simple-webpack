@@ -27,7 +27,7 @@ Configure TypeScript, there are `base` and `strict` pre-configrations available:
 `tsconfig.json`
 ```json
 {
-	"extends": "node_modules/@grifart/simple-webpack/typescript/tsconfig.strict.json"
+	"extends": "./node_modules/@grifart/simple-webpack/typescript/tsconfig.base.json"
 }
 ```
 
