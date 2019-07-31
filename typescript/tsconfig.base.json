@@ -1,6 +1,5 @@
 {
 	"compilerOptions": {
-		"moduleResolution": "node",
 		"target": "ES5",
 		"sourceMap": true
 	}
