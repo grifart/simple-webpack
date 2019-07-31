@@ -3,7 +3,7 @@
 A simple webpack configration for simple websites
 
 
-## Setup
+## Setup
 
 ```bash
 yarn init
