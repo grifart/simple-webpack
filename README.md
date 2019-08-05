@@ -7,7 +7,7 @@ A simple webpack configration for simple websites
 
 ```bash
 yarn init
-yarn add https://github.com/grifart/simple-webpack.git
+yarn add --dev https://github.com/grifart/simple-webpack.git
 ```
 
 Add scripts to your package.json
