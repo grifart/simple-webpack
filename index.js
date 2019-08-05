@@ -65,6 +65,12 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                         }
                     },
                     {
+                        loader: 'resolve-url-loader',
+                        options: {
+                            sourceMap: true
+                        }
+                    },
+                    {
                         // compiles Sass to CSS, using Node Sass by default
                         loader: "sass-loader",
                         options: {
@@ -116,6 +122,15 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                 }));
             }
         }
+        rules.push({
+            test: /\.(woff2?|ttf|eot)$/,
+            use: [
+                {
+                    loader: "file-loader",
+                    options: { name: '[name].[ext]' }
+                }
+            ]
+        });
         return { rules: rules, plugins: plugins };
     };
     var absolutize = function (relative) {

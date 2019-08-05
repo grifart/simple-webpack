@@ -117,6 +117,12 @@ export function provideConfiguration(
 						}
 					},
 					{
+						loader: 'resolve-url-loader',
+						options: {
+							sourceMap: true,
+						},
+					},
+					{
 						// compiles Sass to CSS, using Node Sass by default
 						loader: "sass-loader",
 						options: {
@@ -176,6 +182,16 @@ export function provideConfiguration(
 				);
 			}
 		}
+
+		rules.push({
+			test: /\.(woff2?|ttf|eot)$/,
+			use: [
+				{
+					loader: "file-loader",
+					options: {name: '[name].[ext]'}
+				}
+			],
+		});
 
 		return { rules, plugins };
 	};
