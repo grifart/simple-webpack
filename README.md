@@ -1,16 +1,19 @@
-# simple-webpack
+# Simple WebPack
 
-A simple webpack configration for simple websites
+TypeScript, Babel, WebPack, SASS, Imagemin, hot-reload and more. They speed up development, but they take time to configure. Not anymore. 
 
+There should be a simple WebPack configuration for simple website.
 
 ## Setup
+
+Init yarn and add simple webpack.
 
 ```bash
 yarn init
 yarn add --dev https://github.com/grifart/simple-webpack.git
 ```
 
-Add scripts to your package.json
+Add scripts to your package.json, so you can then use `yarn run build` and `yarn run dev`
 
 `package.json`
 ```json
@@ -22,7 +25,7 @@ Add scripts to your package.json
 }
 ```
 
-Configure TypeScript, there are `base` and `strict` pre-configrations available:
+Configure TypeScript if you want to use it. There are `base` and `strict` presets available:
 
 `tsconfig.json`
 ```json
@@ -36,7 +39,6 @@ Configure TypeScript, there are `base` and `strict` pre-configrations available:
 import {provideConfiguration} from '@grifart/simple-webpack';
 
 export default provideConfiguration({
-
 	images: {
 		enabled: true,
 		optimize: true
@@ -59,3 +61,8 @@ export default provideConfiguration({
 }, __dirname)
 
 ```
+
+## Examples
+
+Examples are in [`tests/`](tests/) folder. Each of these examples are checked on every push, so we make sure that project is as-backward-compatible as possible. And if not, there is always simple way how to [migrate to newer version](https://github.com/grifart/simple-webpack/commit/66350728d62c4a03c9d4c675a5025fc780a2a634#diff-04c6e90faac2675aa89e2176d2eec7d8).
+
