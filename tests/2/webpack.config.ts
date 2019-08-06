@@ -13,6 +13,9 @@ export default provideConfiguration({
 		enabled: true,
 		extract: true
 	},
+	copy: {
+		enabled: false
+	},
 	paths: {
 		applicationEntryPointFile: "sources/index.js",
 		distributionDirectory: "www/dist",

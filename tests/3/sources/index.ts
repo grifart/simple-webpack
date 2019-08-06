@@ -1,6 +1,7 @@
 
 import "./scss/something.scss";
 import {test} from "./test/testModule";
+import './assets/test.csv';
 
 // Some random ES6 feature, that needs to be transpiled to older JS
 async function testAsync () {

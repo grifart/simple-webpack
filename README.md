@@ -48,6 +48,9 @@ export default provideConfiguration({
 		enabled: true,
 		extract: true
 	},
+	copy: {
+		enabled: false,
+	},
 	paths: {
 		applicationEntryPointFile: "js/main.js",
 		distributionDirectory: "dist",

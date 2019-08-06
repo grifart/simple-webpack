@@ -13,6 +13,10 @@ export default provideConfiguration({
 		enabled: true,
 		extract: true
 	},
+	copy: {
+		enabled: true,
+		pattern: /.(txt|pdf|csv)$/
+	},
 	paths: {
 		applicationEntryPointFile: "sources/index.ts",
 		distributionDirectory: "www/dist",

@@ -13,5 +13,8 @@ export default provideConfiguration({
 		enabled: true,
 		extract: true
 	},
+	copy: {
+		enabled: false
+	},
 	paths: SimpleWebPackConfig_v1_Paths_DEFAULT
 }, __dirname)

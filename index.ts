@@ -55,6 +55,12 @@ export interface SimpleWebPackConfig_v1 {
 	images: FeatureToggle_v1<{
 		optimize: boolean
 	}>,
+	copy: FeatureToggle_v1<{
+		/**
+		 * Pattern used to mach files, which should be copied.
+		 */
+		pattern: RegExp
+	}>,
 	paths: SimpleWebPackConfig_v1_Paths,
 }
 
@@ -195,15 +201,17 @@ export function provideConfiguration(
 			}
 		}
 
-		rules.push({
-			test: /\.(woff2?|ttf|eot)$/,
-			use: [
-				{
-					loader: "file-loader",
-					options: {name: '[name].[ext]'}
-				}
-			],
-		});
+		if (config.copy.enabled) {
+			rules.push({
+				test: config.copy.pattern,
+				use: [
+					{
+						loader: "file-loader",
+						options: {name: '[name].[ext]'}
+					}
+				],
+			});
+		}
 
 		return { rules, plugins };
 	};
