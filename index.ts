@@ -40,18 +40,21 @@ export const SimpleWebPackConfig_v1_Paths_DEFAULT: SimpleWebPackConfig_v1_Paths 
 	publicContentRoot: "."
 };
 
+/**
+ * Represents feature, which can be turned off or on.
+ * And has configuration when enabled.
+ */
+type FeatureToggle_v1<T extends object> = {enabled: true} & T | {enabled: false}
+
 export interface SimpleWebPackConfig_v1 {
-	scripts: {
-		enabled: boolean,
-	},
-	styles: {
-		enabled: boolean,
+	scripts:
+		FeatureToggle_v1<{}>,
+	styles: FeatureToggle_v1<{
 		extract: boolean;
-	},
-	images: {
-		enabled: boolean,
-		optimize: boolean,
-	},
+	}>,
+	images: FeatureToggle_v1<{
+		optimize: boolean
+	}>,
 	paths: SimpleWebPackConfig_v1_Paths,
 }
 
