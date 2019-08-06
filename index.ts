@@ -40,6 +40,11 @@ export const SimpleWebPackConfig_v1_Paths_DEFAULT: SimpleWebPackConfig_v1_Paths 
 	publicContentRoot: "."
 };
 
+
+export const CommonPathPatterns_v1 = {
+	fonts: /\\.(woff2?|otf|ttf|eot)$/,
+	documents: /\\.(docx?|odt|pdf|xlsx?|txt|rtf)$/,
+};
 /**
  * Represents feature, which can be turned off or on.
  * And has configuration when enabled.
