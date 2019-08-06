@@ -73,7 +73,7 @@ export function provideConfiguration(
 		let plugins = [];
 
 		if (config.scripts.enabled) {
-			const scriptsOnlyTest = /\.js$/;
+			const scriptsOnlyTest = /\.jsx?$/;
 			rules.push({
 				test: scriptsOnlyTest,
 				exclude: /node_modules/,
@@ -89,6 +89,7 @@ export function provideConfiguration(
 					exclude: /node_modules/,
 					use: {
 						loader: "ts-loader",
+						// source maps are enabled by tsconfig.json from typescript/* directory
 					},
 				},
 			);
