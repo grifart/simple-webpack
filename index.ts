@@ -40,25 +40,34 @@ export const SimpleWebPackConfig_v1_Paths_DEFAULT: SimpleWebPackConfig_v1_Paths 
 	publicContentRoot: "."
 };
 
+/**
+ * Represents feature, which can be turned off or on.
+ * And has configuration when enabled.
+ */
+type FeatureToggle_v1<T extends object> = {enabled: true} & T | {enabled: false}
+
 export interface SimpleWebPackConfig_v1 {
-	scripts: {
-		enabled: boolean,
-	},
-	styles: {
-		enabled: boolean,
+	scripts:
+		FeatureToggle_v1<{}>,
+	styles: FeatureToggle_v1<{
 		extract: boolean;
-	},
-	images: {
-		enabled: boolean,
-		optimize: boolean,
-	},
+	}>,
+	images: FeatureToggle_v1<{
+		optimize: boolean
+	}>,
+	copy: FeatureToggle_v1<{
+		/**
+		 * Pattern used to mach files, which should be copied.
+		 */
+		pattern: RegExp
+	}>,
 	paths: SimpleWebPackConfig_v1_Paths,
 }
 
 export function provideConfiguration(
 	config: SimpleWebPackConfig_v1,
 	projectAbsoluteRootPath: string
-): (env: any, options: webpack.WebpackOptions) => webpack.WebpackOptions
+): (env: any, options: webpack.Configuration) => webpack.Configuration
 {
 	console.log(projectAbsoluteRootPath);
 	if (!path.isAbsolute(projectAbsoluteRootPath)) {
@@ -66,14 +75,14 @@ export function provideConfiguration(
 	}
 
 	const evaluate = (production: boolean): {
-		rules: webpack.WebpackOptions.module.rules,
-		plugins: webpack.WebpackOptions.plugins
+		rules: webpack.RuleSetRule[],
+		plugins: webpack.Plugin[]
 	} => {
-		let rules = [];
-		let plugins = [];
+		const rules = [];
+		const plugins = [];
 
 		if (config.scripts.enabled) {
-			const scriptsOnlyTest = /\.js$/;
+			const scriptsOnlyTest = /\.jsx?$/;
 			rules.push({
 				test: scriptsOnlyTest,
 				exclude: /node_modules/,
@@ -84,6 +93,15 @@ export function provideConfiguration(
 					}
 				}
 			});
+			rules.push({
+					test: /\.tsx?$/,
+					exclude: /node_modules/,
+					use: {
+						loader: "ts-loader",
+						// source maps are enabled by tsconfig.json from typescript/* directory
+					},
+				},
+			);
 		}
 
 		if (config.styles.enabled) {
@@ -183,15 +201,17 @@ export function provideConfiguration(
 			}
 		}
 
-		rules.push({
-			test: /\.(woff2?|ttf|eot)$/,
-			use: [
-				{
-					loader: "file-loader",
-					options: {name: '[name].[ext]'}
-				}
-			],
-		});
+		if (config.copy.enabled) {
+			rules.push({
+				test: config.copy.pattern,
+				use: [
+					{
+						loader: "file-loader",
+						options: {name: '[name].[ext]'}
+					}
+				],
+			});
+		}
 
 		return { rules, plugins };
 	};
@@ -208,7 +228,7 @@ export function provideConfiguration(
 			output: {
 				path: absolutize(config.paths.distributionDirectory),
 			},
-			devtool: isProduction ? "source-maps" : "inline-source-maps",
+			devtool: isProduction ? "source-map" : "inline-source-map",
 			devServer: {
 				// The bundled files will be available in the browser under this path...
 				publicPath: "/" + path.relative(
@@ -222,7 +242,10 @@ export function provideConfiguration(
 			module: {
 				rules: result.rules
 			},
-			plugins: result.plugins
+			plugins: result.plugins,
+			resolve: {
+				extensions: ['.ts', '.js', '.json', '.css', '.scss'],
+			}
 		};
 	};
 }

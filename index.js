@@ -22,7 +22,7 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
         var rules = [];
         var plugins = [];
         if (config.scripts.enabled) {
-            var scriptsOnlyTest = /\.js$/;
+            var scriptsOnlyTest = /\.jsx?$/;
             rules.push({
                 test: scriptsOnlyTest,
                 exclude: /node_modules/,
@@ -31,6 +31,13 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                     options: {
                         sourceMap: true
                     }
+                }
+            });
+            rules.push({
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "ts-loader"
                 }
             });
         }
@@ -122,15 +129,17 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                 }));
             }
         }
-        rules.push({
-            test: /\.(woff2?|ttf|eot)$/,
-            use: [
-                {
-                    loader: "file-loader",
-                    options: { name: '[name].[ext]' }
-                }
-            ]
-        });
+        if (config.copy.enabled) {
+            rules.push({
+                test: config.copy.pattern,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: { name: '[name].[ext]' }
+                    }
+                ]
+            });
+        }
         return { rules: rules, plugins: plugins };
     };
     var absolutize = function (relative) {
@@ -144,7 +153,7 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
             output: {
                 path: absolutize(config.paths.distributionDirectory)
             },
-            devtool: isProduction ? "source-maps" : "inline-source-maps",
+            devtool: isProduction ? "source-map" : "inline-source-map",
             devServer: {
                 // The bundled files will be available in the browser under this path...
                 publicPath: "/" + path.relative(absolutize(config.paths.publicContentRoot), absolutize(config.paths.distributionDirectory)),
@@ -154,7 +163,10 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
             module: {
                 rules: result.rules
             },
-            plugins: result.plugins
+            plugins: result.plugins,
+            resolve: {
+                extensions: ['.ts', '.js', '.json', '.css', '.scss']
+            }
         };
     };
 }
