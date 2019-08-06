@@ -69,8 +69,8 @@ export function provideConfiguration(
 		rules: webpack.RuleSetRule[],
 		plugins: webpack.Plugin[]
 	} => {
-		let rules = [];
-		let plugins = [];
+		const rules = [];
+		const plugins = [];
 
 		if (config.scripts.enabled) {
 			const scriptsOnlyTest = /\.jsx?$/;
