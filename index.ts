@@ -59,7 +59,7 @@ export interface SimpleWebPackConfig_v1 {
 		/**
 		 * Pattern used to mach files, which should be copied.
 		 */
-		pattern: RegExp
+		pattern: RegExp | RegExp[]
 	}>,
 	paths: SimpleWebPackConfig_v1_Paths,
 }
@@ -78,8 +78,8 @@ export function provideConfiguration(
 		rules: webpack.RuleSetRule[],
 		plugins: webpack.Plugin[]
 	} => {
-		const rules = [];
-		const plugins = [];
+		const rules: webpack.RuleSetRule[] = [];
+		const plugins: webpack.Plugin[] = [];
 
 		if (config.scripts.enabled) {
 			const scriptsOnlyTest = /\.jsx?$/;
