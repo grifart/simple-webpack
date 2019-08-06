@@ -14,8 +14,8 @@ exports.SimpleWebPackConfig_v1_Paths_DEFAULT = {
     publicContentRoot: "."
 };
 exports.CommonPathPatterns_v1 = {
-    fonts: /\\.(woff2?|otf|ttf|eot)$/,
-    documents: /\\.(docx?|odt|pdf|xlsx?|txt|rtf)$/
+    fonts: /\.(woff2?|otf|ttf|eot)$/,
+    documents: /\.(docx?|odt|pdf|xlsx?|txt|rtf)$/
 };
 function provideConfiguration(config, projectAbsoluteRootPath) {
     console.log(projectAbsoluteRootPath);
