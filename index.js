@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+exports.provideConfiguration = exports.CommonPathPatterns_v1 = exports.SimpleWebPackConfig_v1_Paths_DEFAULT = void 0;
 var path = require("path");
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var ImageminPlugin = require("imagemin-webpack");
@@ -7,7 +8,6 @@ var imageminGifsicle = require("imagemin-gifsicle");
 var imageminJpegtran = require("imagemin-jpegtran");
 var imageminOptipng = require("imagemin-optipng");
 var imageminSvgo = require("imagemin-svgo");
-var postcssPresetEnv = require('postcss-preset-env');
 exports.SimpleWebPackConfig_v1_Paths_DEFAULT = {
     applicationEntryPointFile: "src/index.js",
     distributionDirectory: "dist",
@@ -52,10 +52,7 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                 use: [
                     // creates style nodes from JS strings
                     {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            sourceMap: true
-                        }
+                        loader: MiniCssExtractPlugin.loader
                     },
                     {
                         // translates CSS into CommonJS
@@ -68,11 +65,14 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                     {
                         loader: 'postcss-loader',
                         options: {
-                            ident: 'postcss',
                             sourceMap: true,
-                            plugins: function () { return [
-                                postcssPresetEnv( /* pluginOptions */)
-                            ]; }
+                            postcssOptions: {
+                                plugins: [
+                                    ["postcss-preset-env", {
+                                            ident: 'postcss'
+                                        }],
+                                ]
+                            }
                         }
                     },
                     {

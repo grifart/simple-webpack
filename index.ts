@@ -9,8 +9,6 @@ const imageminJpegtran = require("imagemin-jpegtran");
 const imageminOptipng = require("imagemin-optipng");
 const imageminSvgo = require("imagemin-svgo");
 
-const postcssPresetEnv = require('postcss-preset-env');
-
 export interface SimpleWebPackConfig_v1_Paths {
 	/**
 	 * Relative path to entry point of your application.
@@ -81,10 +79,10 @@ export function provideConfiguration(
 
 	const evaluate = (production: boolean): {
 		rules: webpack.RuleSetRule[],
-		plugins: webpack.Plugin[]
+		plugins: webpack.WebpackPluginInstance[]
 	} => {
 		const rules: webpack.RuleSetRule[] = [];
-		const plugins: webpack.Plugin[] = [];
+		const plugins: webpack.WebpackPluginInstance[] = [];
 
 		if (config.scripts.enabled) {
 			const scriptsOnlyTest = /\.jsx?$/;
@@ -117,9 +115,6 @@ export function provideConfiguration(
 					// creates style nodes from JS strings
 					{
 						loader: MiniCssExtractPlugin.loader,
-						options: {
-							sourceMap: true
-						}
 					},
 					{
 						// translates CSS into CommonJS
@@ -132,11 +127,12 @@ export function provideConfiguration(
 					{
 						loader: 'postcss-loader',
 						options: {
-							ident: 'postcss',
 							sourceMap: true,
-							plugins: () => [
-								postcssPresetEnv(/* pluginOptions */)
-							]
+							postcssOptions: {
+								plugins: [
+									["postcss-preset-env"],
+								]
+							}
 						}
 					},
 					{
