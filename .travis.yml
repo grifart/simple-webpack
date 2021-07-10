@@ -1,9 +1,10 @@
 language: node_js
 node_js:
-  - "10" # LTS (in 04/2019)
-  - "11"
-  - "12"
-  - "13" # current (in 04/2019)
+  - "12" # temporarily needed for local development
+  - "13"
+  - "14" # LTS (in 07/2021)
+  - "15"
+  - "16" # current (in 07/2021)
 
 script:
   - yarn run test
