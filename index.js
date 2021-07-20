@@ -4,10 +4,6 @@ exports.provideConfiguration = exports.CommonPathPatterns_v1 = exports.SimpleWeb
 var path = require("path");
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var ImageminPlugin = require("imagemin-webpack");
-var imageminGifsicle = require("imagemin-gifsicle");
-var imageminJpegtran = require("imagemin-jpegtran");
-var imageminOptipng = require("imagemin-optipng");
-var imageminSvgo = require("imagemin-svgo");
 exports.SimpleWebPackConfig_v1_Paths_DEFAULT = {
     applicationEntryPointFile: "src/index.js",
     distributionDirectory: "dist",
@@ -68,9 +64,7 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                             sourceMap: true,
                             postcssOptions: {
                                 plugins: [
-                                    ["postcss-preset-env", {
-                                            ident: 'postcss'
-                                        }],
+                                    ["postcss-preset-env"],
                                 ]
                             }
                         }
@@ -99,7 +93,7 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
         }
         if (config.images.enabled) {
             rules.push({
-                test: /\.(png|jpe?g|svg)$/,
+                test: /\.(png|gif|jpe?g|svg)$/,
                 use: [
                     {
                         loader: "file-loader",
@@ -116,18 +110,10 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                         // Lossless optimization with custom option
                         // Feel free to experement with options for better result for you
                         plugins: [
-                            imageminGifsicle({
-                                interlaced: true
-                            }),
-                            imageminJpegtran({
-                                progressive: true
-                            }),
-                            imageminOptipng({
-                                optimizationLevel: 5
-                            }),
-                            imageminSvgo({
-                                removeViewBox: true
-                            })
+                            ['gifsicle', { interlaced: true }],
+                            ['mozjpeg', { progressive: true }],
+                            ['optipng', { optimizationLevel: 5 }],
+                            ['svgo', { removeViewBox: true }],
                         ]
                     }
                 }));
