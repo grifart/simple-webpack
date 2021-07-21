@@ -4,13 +4,6 @@ import * as path from "path";
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ImageminPlugin = require("imagemin-webpack");
 
-const imageminGifsicle = require("imagemin-gifsicle");
-const imageminJpegtran = require("imagemin-jpegtran");
-const imageminOptipng = require("imagemin-optipng");
-const imageminSvgo = require("imagemin-svgo");
-
-const postcssPresetEnv = require('postcss-preset-env');
-
 export interface SimpleWebPackConfig_v1_Paths {
 	/**
 	 * Relative path to entry point of your application.
@@ -81,10 +74,10 @@ export function provideConfiguration(
 
 	const evaluate = (production: boolean): {
 		rules: webpack.RuleSetRule[],
-		plugins: webpack.Plugin[]
+		plugins: webpack.WebpackPluginInstance[]
 	} => {
 		const rules: webpack.RuleSetRule[] = [];
-		const plugins: webpack.Plugin[] = [];
+		const plugins: webpack.WebpackPluginInstance[] = [];
 
 		if (config.scripts.enabled) {
 			const scriptsOnlyTest = /\.jsx?$/;
@@ -117,9 +110,6 @@ export function provideConfiguration(
 					// creates style nodes from JS strings
 					{
 						loader: MiniCssExtractPlugin.loader,
-						options: {
-							sourceMap: true
-						}
 					},
 					{
 						// translates CSS into CommonJS
@@ -132,11 +122,12 @@ export function provideConfiguration(
 					{
 						loader: 'postcss-loader',
 						options: {
-							ident: 'postcss',
 							sourceMap: true,
-							plugins: () => [
-								postcssPresetEnv(/* pluginOptions */)
-							]
+							postcssOptions: {
+								plugins: [
+									["postcss-preset-env"],
+								]
+							}
 						}
 					},
 					{
@@ -167,7 +158,7 @@ export function provideConfiguration(
 
 		if (config.images.enabled) {
 			rules.push({
-				test: /\.(png|jpe?g|svg)$/,
+				test: /\.(png|gif|jpe?g|svg)$/,
 				use: [
 					{
 						loader: "file-loader",
@@ -187,18 +178,13 @@ export function provideConfiguration(
 							// Lossless optimization with custom option
 							// Feel free to experement with options for better result for you
 							plugins: [
-								imageminGifsicle({
-									interlaced: true
-								}),
-								imageminJpegtran({
-									progressive: true
-								}),
-								imageminOptipng({
-									optimizationLevel: 5
-								}),
-								imageminSvgo({
-									removeViewBox: true
-								})
+								['gifsicle', {interlaced: true}],
+								['mozjpeg', {
+									progressive: true,
+									quality: 75,
+								}],
+								['optipng', {optimizationLevel: 5}],
+								['svgo', {removeViewBox: true}],
 							]
 						}
 					})
