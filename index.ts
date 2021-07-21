@@ -179,7 +179,10 @@ export function provideConfiguration(
 							// Feel free to experement with options for better result for you
 							plugins: [
 								['gifsicle', {interlaced: true}],
-								['mozjpeg', {progressive: true}],
+								['mozjpeg', {
+									progressive: true,
+									quality: 75,
+								}],
 								['optipng', {optimizationLevel: 5}],
 								['svgo', {removeViewBox: true}],
 							]
