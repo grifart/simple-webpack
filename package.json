@@ -1,6 +1,6 @@
 {
   "name": "@grifart/simple-webpack",
-  "version": "1.0.0",
+  "version": "0.2.0-beta.3",
   "description": "Simple webpack for simple websites",
   "author": "Grifart spol. s r.o.",
   "license": "MIT",
