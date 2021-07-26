@@ -157,9 +157,25 @@ export function provideConfiguration(
 		}
 
 		if (config.images.enabled) {
+
+			// see https://webpack.js.org/guides/asset-modules
+
+			// for those which are imported in stylesheets
 			rules.push({
 				test: /\.(png|gif|jpe?g|svg)$/,
 				type: 'asset/resource',
+			});
+
+			// for those which are imported through javascript
+			rules.push({
+				test: /\.(png|gif|jpe?g|svg)$/,
+				use: [{
+					loader: "file-loader",
+					options: {name: '[name].[ext]'},
+				}],
+				dependency: {
+					not: ['url'],
+				},
 			});
 
 
