@@ -159,12 +159,7 @@ export function provideConfiguration(
 		if (config.images.enabled) {
 			rules.push({
 				test: /\.(png|gif|jpe?g|svg)$/,
-				use: [
-					{
-						loader: "file-loader",
-						options: {name: '[name].[ext]'}
-					}
-				],
+				type: 'asset/resource',
 			});
 
 

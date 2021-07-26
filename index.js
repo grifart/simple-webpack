@@ -94,12 +94,7 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
         if (config.images.enabled) {
             rules.push({
                 test: /\.(png|gif|jpe?g|svg)$/,
-                use: [
-                    {
-                        loader: "file-loader",
-                        options: { name: '[name].[ext]' }
-                    }
-                ]
+                type: 'asset/resource'
             });
             if (config.images.optimize) {
                 // Make sure that the plugin is after any plugins that add images, example `CopyWebpackPlugin`

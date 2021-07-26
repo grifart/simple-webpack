@@ -15,7 +15,6 @@
     "@types/webpack": "^5.28.0",
     "babel-loader": "^8.0.5",
     "css-loader": "^6.2.0",
-    "file-loader": "^6.2.0",
     "imagemin-gifsicle": "^7.0.0",
     "imagemin-jpegtran": "^7.0.0",
     "imagemin-mozjpeg": "^9.0.0",
