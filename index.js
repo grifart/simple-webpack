@@ -125,7 +125,10 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                         loader: "file-loader",
                         options: { name: '[name].[ext]' }
                     }
-                ]
+                ],
+                dependency: {
+                    not: ['url']
+                }
             });
         }
         return { rules: rules, plugins: plugins };

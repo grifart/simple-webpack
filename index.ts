@@ -196,6 +196,9 @@ export function provideConfiguration(
 						options: {name: '[name].[ext]'}
 					}
 				],
+				dependency: {
+					not: ['url'],
+				},
 			});
 		}
 
