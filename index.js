@@ -4,7 +4,6 @@ exports.provideConfiguration = exports.CommonPathPatterns_v1 = exports.SimpleWeb
 var path = require("path");
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
-var extendDefaultPlugins = require("svgo").extendDefaultPlugins;
 exports.SimpleWebPackConfig_v1_Paths_DEFAULT = {
     applicationEntryPointFile: "src/index.js",
     distributionDirectory: "dist",
@@ -129,12 +128,16 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                                     }],
                                 ['optipng', { optimizationLevel: 5 }],
                                 ['svgo', {
-                                        plugins: extendDefaultPlugins([
+                                        plugins: [
                                             {
-                                                name: 'removeViewBox',
-                                                active: true
-                                            },
-                                        ])
+                                                name: 'preset-default',
+                                                params: {
+                                                    overrides: {
+                                                        removeViewBox: true
+                                                    }
+                                                }
+                                            }
+                                        ]
                                     }],
                             ]
                         }

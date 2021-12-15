@@ -3,7 +3,6 @@ import * as path from "path";
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
-const { extendDefaultPlugins } = require("svgo");
 
 export interface SimpleWebPackConfig_v1_Paths {
 	/**
@@ -201,17 +200,21 @@ export function provideConfiguration(
 									}],
 									['optipng', {optimizationLevel: 5}],
 									['svgo', {
-										plugins: extendDefaultPlugins([
+										plugins: [
 											{
-												name: 'removeViewBox',
-												active: true,
+												name: 'preset-default',
+												params: {
+													overrides: {
+														removeViewBox: true,
+													},
+												},
 											},
-										]),
+										],
 									}],
-								]
+								],
 							},
-						}
-					})
+						},
+					}),
 				);
 			}
 		}
