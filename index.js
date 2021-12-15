@@ -159,8 +159,6 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
             },
             devtool: isProduction ? "source-map" : "inline-source-map",
             devServer: {
-                host: 'local-ip',
-                port: 'auto',
                 static: {
                     // Tell the server where to serve content from.
                     directory: absolutize(config.paths.publicContentRoot),
