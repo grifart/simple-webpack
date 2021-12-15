@@ -235,14 +235,21 @@ export function provideConfiguration(
 			},
 			devtool: isProduction ? "source-map" : "inline-source-map",
 			devServer: {
-				// The bundled files will be available in the browser under this path...
-				publicPath: "/" + path.relative(
-					absolutize(config.paths.publicContentRoot),
-					absolutize(config.paths.distributionDirectory)
-				),
+				host: 'local-ip',
+				port: 'auto',
 
-				// Tell the server where to serve content from.
-				contentBase: absolutize(config.paths.publicContentRoot),
+				devMiddleware: {
+					// The bundled files will be available in the browser under this path...
+					publicPath: "/" + path.relative(
+						absolutize(config.paths.publicContentRoot),
+						absolutize(config.paths.distributionDirectory)
+					),
+				},
+
+				static: {
+					// Tell the server where to serve content from.
+					contentBase: absolutize(config.paths.publicContentRoot),
+				},
 			},
 			module: {
 				rules: result.rules
