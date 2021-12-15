@@ -248,16 +248,9 @@ export function provideConfiguration(
 			},
 			devtool: isProduction ? "source-map" : "inline-source-map",
 			devServer: {
-				static: {
-					// Tell the server where to serve content from.
+				static: [{
 					directory: absolutize(config.paths.publicContentRoot),
-
-					// The bundled files will be available in the browser under this path...
-					publicPath: "/" + path.relative(
-						absolutize(config.paths.publicContentRoot),
-						absolutize(config.paths.distributionDirectory)
-					),
-				},
+				}],
 			},
 			module: {
 				rules: result.rules

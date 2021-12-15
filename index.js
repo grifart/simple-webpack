@@ -171,12 +171,9 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
             },
             devtool: isProduction ? "source-map" : "inline-source-map",
             devServer: {
-                static: {
-                    // Tell the server where to serve content from.
-                    directory: absolutize(config.paths.publicContentRoot),
-                    // The bundled files will be available in the browser under this path...
-                    publicPath: "/" + path.relative(absolutize(config.paths.publicContentRoot), absolutize(config.paths.distributionDirectory))
-                }
+                static: [{
+                        directory: absolutize(config.paths.publicContentRoot)
+                    }]
             },
             module: {
                 rules: result.rules
