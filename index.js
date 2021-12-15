@@ -3,7 +3,8 @@ exports.__esModule = true;
 exports.provideConfiguration = exports.CommonPathPatterns_v1 = exports.SimpleWebPackConfig_v1_Paths_DEFAULT = void 0;
 var path = require("path");
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
-var ImageminPlugin = require("imagemin-webpack");
+var ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+var extendDefaultPlugins = require("svgo").extendDefaultPlugins;
 exports.SimpleWebPackConfig_v1_Paths_DEFAULT = {
     applicationEntryPointFile: "src/index.js",
     distributionDirectory: "dist",
@@ -21,6 +22,7 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
     var evaluate = function (production) {
         var rules = [];
         var plugins = [];
+        var minimizers = [];
         if (config.scripts.enabled) {
             var scriptsOnlyTest = /\.jsx?$/;
             rules.push({
@@ -111,21 +113,31 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
             });
             if (config.images.optimize) {
                 // Make sure that the plugin is after any plugins that add images, example `CopyWebpackPlugin`
-                plugins.push(new ImageminPlugin({
-                    bail: false,
-                    cache: true,
-                    imageminOptions: {
-                        // Lossless optimization with custom option
-                        // Feel free to experement with options for better result for you
-                        plugins: [
-                            ['gifsicle', { interlaced: true }],
-                            ['mozjpeg', {
-                                    progressive: true,
-                                    quality: 75
-                                }],
-                            ['optipng', { optimizationLevel: 5 }],
-                            ['svgo', { removeViewBox: true }],
-                        ]
+                minimizers.push(new ImageMinimizerPlugin({
+                    minimizer: {
+                        implementation: ImageMinimizerPlugin.imageminMinify,
+                        options: {
+                            bail: false,
+                            cache: true,
+                            // Lossless optimization with custom option
+                            // Feel free to experement with options for better result for you
+                            plugins: [
+                                ['gifsicle', { interlaced: true }],
+                                ['mozjpeg', {
+                                        progressive: true,
+                                        quality: 75
+                                    }],
+                                ['optipng', { optimizationLevel: 5 }],
+                                ['svgo', {
+                                        plugins: extendDefaultPlugins([
+                                            {
+                                                name: 'removeViewBox',
+                                                active: true
+                                            },
+                                        ])
+                                    }],
+                            ]
+                        }
                     }
                 }));
             }
@@ -144,7 +156,7 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                 }
             });
         }
-        return { rules: rules, plugins: plugins };
+        return { rules: rules, plugins: plugins, minimizers: minimizers };
     };
     var absolutize = function (relative) {
         return path.resolve(projectAbsoluteRootPath, relative);
@@ -170,6 +182,9 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
                 rules: result.rules
             },
             plugins: result.plugins,
+            optimization: {
+                minimizer: result.minimizers
+            },
             resolve: {
                 extensions: ['.ts', '.js', '.json', '.css', '.scss']
             }

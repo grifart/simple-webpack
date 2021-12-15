@@ -2,7 +2,8 @@ import * as webpack from "webpack";
 import * as path from "path";
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ImageminPlugin = require("imagemin-webpack");
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+const { extendDefaultPlugins } = require("svgo");
 
 export interface SimpleWebPackConfig_v1_Paths {
 	/**
@@ -74,10 +75,12 @@ export function provideConfiguration(
 
 	const evaluate = (production: boolean): {
 		rules: webpack.RuleSetRule[],
-		plugins: webpack.WebpackPluginInstance[]
+		plugins: webpack.WebpackPluginInstance[],
+		minimizers: webpack.WebpackPluginInstance[],
 	} => {
 		const rules: webpack.RuleSetRule[] = [];
 		const plugins: webpack.WebpackPluginInstance[] = [];
+		const minimizers: webpack.WebpackPluginInstance[] = [];
 
 		if (config.scripts.enabled) {
 			const scriptsOnlyTest = /\.jsx?$/;
@@ -181,22 +184,32 @@ export function provideConfiguration(
 
 			if (config.images.optimize) {
 				// Make sure that the plugin is after any plugins that add images, example `CopyWebpackPlugin`
-				plugins.push(
-					new ImageminPlugin({
-						bail: false, // Ignore errors on corrupted images
-						cache: true,
-						imageminOptions: {
-							// Lossless optimization with custom option
-							// Feel free to experement with options for better result for you
-							plugins: [
-								['gifsicle', {interlaced: true}],
-								['mozjpeg', {
-									progressive: true,
-									quality: 75,
-								}],
-								['optipng', {optimizationLevel: 5}],
-								['svgo', {removeViewBox: true}],
-							]
+				minimizers.push(
+					new ImageMinimizerPlugin({
+						minimizer: {
+							implementation: ImageMinimizerPlugin.imageminMinify,
+							options: {
+								bail: false, // Ignore errors on corrupted images
+								cache: true,
+								// Lossless optimization with custom option
+								// Feel free to experement with options for better result for you
+								plugins: [
+									['gifsicle', {interlaced: true}],
+									['mozjpeg', {
+										progressive: true,
+										quality: 75,
+									}],
+									['optipng', {optimizationLevel: 5}],
+									['svgo', {
+										plugins: extendDefaultPlugins([
+											{
+												name: 'removeViewBox',
+												active: true,
+											},
+										]),
+									}],
+								]
+							},
 						}
 					})
 				);
@@ -218,7 +231,7 @@ export function provideConfiguration(
 			});
 		}
 
-		return { rules, plugins };
+		return { rules, plugins, minimizers };
 	};
 
 	const absolutize = (relative: string): string =>
@@ -250,6 +263,9 @@ export function provideConfiguration(
 				rules: result.rules
 			},
 			plugins: result.plugins,
+			optimization: {
+				minimizer: result.minimizers,
+			},
 			resolve: {
 				extensions: ['.ts', '.js', '.json', '.css', '.scss'],
 			}
