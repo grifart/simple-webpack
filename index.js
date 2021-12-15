@@ -161,13 +161,11 @@ function provideConfiguration(config, projectAbsoluteRootPath) {
             devServer: {
                 host: 'local-ip',
                 port: 'auto',
-                devMiddleware: {
-                    // The bundled files will be available in the browser under this path...
-                    publicPath: "/" + path.relative(absolutize(config.paths.publicContentRoot), absolutize(config.paths.distributionDirectory))
-                },
                 static: {
                     // Tell the server where to serve content from.
-                    contentBase: absolutize(config.paths.publicContentRoot)
+                    directory: absolutize(config.paths.publicContentRoot),
+                    // The bundled files will be available in the browser under this path...
+                    publicPath: "/" + path.relative(absolutize(config.paths.publicContentRoot), absolutize(config.paths.distributionDirectory))
                 }
             },
             module: {

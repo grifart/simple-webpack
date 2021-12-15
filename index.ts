@@ -238,17 +238,15 @@ export function provideConfiguration(
 				host: 'local-ip',
 				port: 'auto',
 
-				devMiddleware: {
+				static: {
+					// Tell the server where to serve content from.
+					directory: absolutize(config.paths.publicContentRoot),
+
 					// The bundled files will be available in the browser under this path...
 					publicPath: "/" + path.relative(
 						absolutize(config.paths.publicContentRoot),
 						absolutize(config.paths.distributionDirectory)
 					),
-				},
-
-				static: {
-					// Tell the server where to serve content from.
-					contentBase: absolutize(config.paths.publicContentRoot),
 				},
 			},
 			module: {
